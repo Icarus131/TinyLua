@@ -5,13 +5,24 @@ from lexer import tokens
 # start = 'array_declaration'
 
 # Grammar rules
+
+def p_command(p):
+    '''command : exp
+               | function_declaration
+               | array_declaration
+               | if
+               '''
+
 def p_function_declaration(p):
-    '''function_declaration : FUNCTION ID LPAREN parameters RPAREN exp return END'''
+    '''function_declaration : FUNCTION ID LPAREN parameters RPAREN exp return END
+                            | FUNCTION ID LPAREN parameters RPAREN empty return END'''
+
 
 def p_return(p):
     '''return : RETURN parameters
               | RETURN exp
               | RETURN string'''
+
 
 def p_parameters(p):
     '''parameters : empty
@@ -21,12 +32,33 @@ def p_parameters(p):
 def p_parameter(p):
     '''parameter : ID'''
 
-def p_empty(p):
-    '''empty : '''
+def p_array_declaration(p):
+    '''array_declaration : ID ASSIGN LFLOWER elements RFLOWER'''
+
+def p_elements(p):
+    '''elements : empty
+                | element
+                | elements COMMA element'''
+
+def p_element(p):
+    '''element : ID
+               | NUMBER '''
 
 def p_string(p):
     '''string : SQ ID SQ
-              | DQ ID DQ'''
+              | DQ ID DQ
+              | SQ empty SQ
+              | DQ empty DQ'''
+
+def p_if(p):
+    '''if : IF exp THEN exp else END'''
+
+def p_else(p):
+    '''else : empty
+            | ELSE exp'''
+
+def p_empty(p):
+    '''empty : '''
 
 def p_exp(p):
     '''exp : NUMBER
@@ -47,6 +79,7 @@ def p_exp(p):
            | ID ASSIGN exp
            | LPAREN exp RPAREN'''
 
+
 # Error handling rule
 def p_error(p):
     print(f"Syntax error at line {p.lineno}, position {p.lexpos}: Unexpected token '{p.value}'")
@@ -56,9 +89,10 @@ parser = yacc.yacc()
 
 # Define the input declaration
 input_declaration = '''
-function nigger(a,b,c)
-    a=b+a;
-    return "a@"
+if a==b then
+    a=c
+else
+    b=c
 end
 '''
 try:

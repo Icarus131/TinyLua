@@ -5,6 +5,8 @@ tokens = (
     'ID',
     'LPAREN',
     'RPAREN',
+    'LFLOWER',
+    'RFLOWER',
     'COMMA',
     'NUMBER',
     'ASSIGN',
@@ -26,11 +28,16 @@ tokens = (
     'NOT',
     'SQ',
     'DQ',
+    'IF',
+    'ELSE',
+    'THEN'
 )
 
 # Regular expression rules for tokens
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
+t_LFLOWER = r'\{'
+t_RFLOWER = r'\}'
 t_COMMA = r','
 t_NUMBER = r'\d+'
 t_ASSIGN = r'='
